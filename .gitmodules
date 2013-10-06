@@ -1,0 +1,3 @@
+[submodule "test/jasmine"]
+	path = test/jasmine
+	url = http://github.com/detro/jasmine-jsreporter.git
