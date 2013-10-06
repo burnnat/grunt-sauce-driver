@@ -12,7 +12,7 @@ Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) 
 Local Tests
 -----------
 
-Local tests are currently only supported for Google Chrome. To run tests locally, ensure you have download the [ChromeDriver server](https://sites.google.com/a/chromium.org/chromedriver/home) and made it available on your `PATH` environment variable.
+Local tests are currently only supported for Google Chrome. To run tests locally, ensure you have downloaded the [ChromeDriver server](https://sites.google.com/a/chromium.org/chromedriver/home) and made it available on your `PATH` environment variable.
 
 Usage
 -----
