@@ -10,6 +10,8 @@ Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) 
 Usage
 -----
 
+### Example ###
+
 ```javascript
 var saucedriver = require('grunt-sauce-driver');
 
@@ -53,17 +55,94 @@ grunt.initConfig({
 });
 ```
 
-Supported options are:
+### Options ###
 
-* __username__ : The Sauce Labs username that will be used to connect to the servers. _Required_
-* __key__ : The Sauce Labs secret key. Since this is a secret, this should not be checked into the source code and may be available as an environment variable. Grunt can access this using   `process.env.saucekey`. _Required_
-* __url__: The URL to load in the Sauce Labs browser. _Required_
-* __tunneled__: Defaults to true; Won't launch a Sauce Connect tunnel if set to false. _Optional_
-* __tags__: An array of tags displayed for this test on the Sauce Labs dashboard. _Optional_
-* __browsers__: An array of objects representing the [various browsers](https://saucelabs.com/docs/platforms) on which this test should run.  _Optional_
-* __testTimeout__ : Number of milliseconds to wait for qunit tests on each page before timeout and failing the test (default: 180000). _Optional_
-* __testInterval__ : Number of milliseconds between each retry to see if a test is completed or not (default: 1000). _Optional_
-* __testReadyTimeout__: Number of milliseconds to wait until the test-page is ready to be read (default: 10000). _Optional_
+#### Basic ####
+
+* __url__ : String _Required_
+
+  The URL of the page to be tested.
+
+* __script__ : Function _Required_
+
+  The WebDriver script to run, either a custom function or one provided by `grunt-sauce-driver`.
+
+  The function should accept the following parameters:
+  * __browser__: The WebDriver [browser](https://github.com/admc/wd#browser-initialization) object.
+  * __chain__: The WebDriver [chain](https://github.com/admc/wd#chain-api) object.
+  * __options__: The Grunt options object.
+
+* __browsers__ : Object[] _Optional_
+
+  An array of objects representing the [browsers](https://saucelabs.com/docs/platforms) on which this test should run.
+
+* __concurrency__ : Number _Optional_
+
+  Number of concurrent browsers to test against. When running on Sauce Labs, check your account info for your maximum allowed concurrency. Defaults to `1`.
+
+* __slow__ : Boolean _Optional_
+
+  If enabled, adds a small delay (0.5 seconds) between each WebDriver action, to make tests easier to watch and debug. Defaults to `false`.
+
+* __logging__ : Boolean _Optional_
+
+  If enabled, logs information about the running script to the console. Defaults to `true`.
+
+* __testTimeout__ : Number _Optional_
+
+  Number of milliseconds to wait for javascript tests to complete on each page before timeout and failing the test. Default to `180000`.
+
+* __testInterval__ : Number _Optional_
+
+  Number of milliseconds between each poll to see if a javascript test is complete. Defaults to `2000`.
+
+* __testReadyTimeout__ : Number _Optional_
+
+  Number of milliseconds to wait for the test page to load. Defaults to `10000`.
+
+#### SauceLabs ####
+
+* __username__ : String _Optional_
+
+  The username that will be used to connect to Sauce Labs. Defaults to `process.env.SAUCE_USERNAME`.
+
+* __key__ : String _Optional_
+
+  The access key to provide when connecting Sauce Labs. For security purposes, don't hard-code this value in your Gruntfile. Instead, load it via local config file or environment variable. Defaults to `process.env.SAUCE_ACCESS_KEY`.
+
+* __tunneled__ : Boolean _Optional_
+
+  If enabled, uses a [Sauce Connect](https://saucelabs.com/docs/connect) tunnel when running tests on Sauce Labs. Defaults to `true`.
+
+* __tunnelTimeout__ : Number _Optional_
+
+  The connection timeout to use when initializing Sauce Connect, in seconds. Defaults to `120`.
+
+* __testname__ : String _Optional_
+
+  The name of the test, to be displayed on the Sauce Labs dashboard. Defaults to `""`.
+
+* __tags__ : String[] _Optional_
+
+  An array of tags for this test, used when filtering the Sauce Labs dashboard. Defaults to `[]`.
+
+* __build__ : String _Optional_
+
+  The build identifier to be associated with this test. Defaults to `null`.
+
+### Local ###
+
+* __local__ : Boolean _Optional_
+
+  If enabled, will run the current test on the local machine rather than Sauce Labs. Defaults to `false`.
+
+* __autoclose__ : Boolean _Optional_
+
+  When running local tests, determines whether the browser under test will be automatically closed after the test completes. Defaults to `true`.
+
+* __driverPort__ : Number _Optional_
+
+  The port number to use for communicating with the local WebDriver server. Defaults to `9515`.
 
 License
 -------
