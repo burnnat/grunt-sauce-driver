@@ -8,6 +8,13 @@
 		"name": "Nat Burns"
 	},
 	
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/burnnat/grunt-sauce-driver/blob/master/LICENSE"
+		}
+	],
+	
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/burnnat/grunt-sauce-driver.git"
@@ -32,6 +39,16 @@
 	"peerDependencies": {
 		"grunt": "~0.4.0"
 	},
+	
+	"keywords": [
+		"gruntplugin",
+		"grunt",
+		"saucelabs",
+		"webdriver",
+		"test",
+		"jasmine",
+		"siesta"
+	],
 	
 	"private": true
 }
