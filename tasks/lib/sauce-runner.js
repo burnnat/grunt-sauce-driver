@@ -184,7 +184,7 @@ module.exports = {
 						else {
 							chain.get(options.url);
 							
-							var scriptErr = options.script(browser, chain);
+							var scriptErr = options.script(browser, chain, options);
 							
 							if (scriptErr) {
 								logError('Unable to initialize test script', scriptErr);
@@ -277,7 +277,7 @@ module.exports = {
 			grunt.log.writeln("=> Starting local WebDriver ...");
 			
 			var scriptErr;
-			var driverPort = options.driverPort || 9515;
+			var driverPort = options.driverPort;
 			
 			var driver = spawn(
 				'C:/Selenium/chromedriver.exe',
