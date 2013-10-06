@@ -79,7 +79,7 @@ grunt.initConfig({
   * __chain__: The WebDriver [chain](https://github.com/admc/wd#chain-api) object.
   * __options__: The Grunt options object.
 
-* __browsers__ : Object[] _Optional_
+* __browsers__ : Object[] _Required_
 
   An array of objects representing the [browsers](https://saucelabs.com/docs/platforms) on which this test should run.
 

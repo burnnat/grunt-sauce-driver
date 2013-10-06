@@ -202,6 +202,14 @@ module.exports = {
 		
 		var failures;
 		
+		queue.drain = function() {
+			if (failures) {
+				grunt.log.error('One or more tests failed.');
+			}
+			
+			callback(failures);
+		};
+		
 		options.browsers.forEach(function(browserConfig) {
 			var browserId = [browserConfig.browserName, browserConfig.version, browserConfig.platform].join(':');
 			
@@ -227,23 +235,9 @@ module.exports = {
 				}
 			);
 		});
-		
-		queue.drain = function() {
-			if (failures) {
-				grunt.log.error('One or more tests failed.');
-			}
-			
-			callback(failures);
-		};
 	},
 	
 	run: function(grunt, options, done) {
-		if (!options.script) {
-			grunt.log.error('No Selenium script specified.');
-			done(false);
-			return false;
-		}
-		
 		if (!options.local) {
 			if (options.tunneled) {
 				var me = this;

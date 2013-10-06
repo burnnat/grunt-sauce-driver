@@ -9,9 +9,9 @@ module.exports = function(grunt) {
 				// Required options
 				url: null,
 				script: null,
+				browsers: [],
 				
 				// Selenium options
-				browsers: [],
 				concurrency: 1,
 				
 				slow: false,
@@ -37,6 +37,21 @@ module.exports = function(grunt) {
 				autoclose: true,
 				driverPort: 9515
 			});
+			
+			if (!options.url) {
+				grunt.log.error('No test URL specified.');
+				return false;
+			}
+			
+			if (!options.script) {
+				grunt.log.error('No Selenium script specified.');
+				return false;
+			}
+			
+			if (!options.browsers || options.browsers.length < 1) {
+				grunt.log.error('No target browsers specified.');
+				return false;
+			}
 			
 			runner.run(grunt, options, this.async());
 		}
