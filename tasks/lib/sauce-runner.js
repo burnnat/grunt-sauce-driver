@@ -4,6 +4,75 @@ var SauceTunnel = require('sauce-tunnel');
 var spawn = require('child_process').spawn;
 
 module.exports = {
+	
+	createTunnel: function(grunt, options, callback) {
+		var _ = grunt.util._;
+		
+		if (this.tunnel) {
+			callback(this.tunnel);
+			return;
+		}
+		
+		var tunnel = this.tunnel = new SauceTunnel(
+			options.username,
+			options.key,
+			options.identifier,
+			true,
+			options.tunnelTimeout
+		);
+		
+		var methods = ['write', 'writeln', 'error', 'ok', 'debug'];
+		methods.forEach(function (method) {
+			tunnel.on('log:' + method, function (text) {
+				grunt.log[method](text);
+			});
+			
+			tunnel.on('verbose:' + method, function (text) {
+				grunt.verbose[method](text);
+			});
+		});
+		
+		grunt.log.writeln("=> Connecting to Saucelabs ...");
+		
+		tunnel.start(function(created) {
+			if (!created) {
+				grunt.log.error('Failed to create SauceConnect tunnel.');
+				return callback(null);
+			}
+			
+			grunt.log.ok("Connected to Saucelabs.");
+			
+			/*
+			 * Okay, so this is pretty hacky... but we can't perform async cleanup
+			 * using process.on('exit'), so we monkey-patch the grunt exit method
+			 * to allow us to perform our cleanup and complete the exit afterward.
+			 */
+			grunt.util.exit = _.wrap(
+				grunt.util.exit,
+				function(original, code) {
+					var scope = this;
+					var args = _.last(arguments, 1);
+					
+					tunnel.stop(function() {
+						grunt.log.writeln('Tunnel connection closed.');
+						original.call(scope, args);
+					});
+				}
+			);
+			
+			process.on(
+				'exit',
+				function() {
+					tunnel.stop(function() {
+						grunt.log.writeln('Tunnel connection closed.');
+					});
+				}
+			);
+			
+			callback(tunnel);
+		});
+	},
+	
 	drive: function(grunt, driverConfig, options, callback) {
 		var _ = grunt.util._;
 		
@@ -178,48 +247,27 @@ module.exports = {
 		if (!options.local) {
 			if (options.tunneled) {
 				var me = this;
-				var tunnel = new SauceTunnel(
-					options.username,
-					options.key,
-					options.identifier,
-					true,
-					options.tunnelTimeout
-				);
 				
-				var methods = ['write', 'writeln', 'error', 'ok', 'debug'];
-				methods.forEach(function (method) {
-					tunnel.on('log:' + method, function (text) {
-						grunt.log[method](text);
-					});
-					
-					tunnel.on('verbose:' + method, function (text) {
-						grunt.verbose[method](text);
-					});
-				});
-				
-				grunt.log.writeln("=> Connecting to Saucelabs ...");
-				
-				tunnel.start(function(created) {
-					if (!created) {
-						grunt.log.error('Failed to create SauceConnect tunnel.');
-						done(false);
-					}
-					
-					grunt.log.ok("Connected to Saucelabs.");
-					
-					options['tunnel-identifier'] = tunnel.identifier;
-					
-					me.runRemote(
-						grunt,
-						options,
-						function(err) {
-							tunnel.stop(function() {
-								grunt.log.writeln('Tunnel connection closed.');
-								done(!err);
-							});
+				this.createTunnel(
+					grunt,
+					options,
+					function(tunnel) {
+						if (!tunnel) {
+							done(false);
 						}
-					);
-				})
+						else {
+							options['tunnel-identifier'] = tunnel.identifier;
+							
+							me.runRemote(
+								grunt,
+								options,
+								function(err) {
+									done(!err);
+								}
+							);
+						}
+					}
+				);
 			}
 			else {
 				this.runRemote(grunt, options, done);
@@ -280,18 +328,35 @@ module.exports = {
 			sauce.updateJob(
 				job,
 				{
-					passed: !browserError && browser.saucePassed !== false,
-					'custom-data': browser.sauceData
+					passed: !browserError && browser.saucePassed !== false
 				},
 				function(err) {
 					if (err) {
+						err = err.errors;
 						grunt.log.error('Error updating SauceLabs status for job ' + job + ': ' + err);
 					}
 					else {
 						grunt.log.verbose.writeln('Updated SauceLabs status for job: ' + job);
 					}
 					
-					next(browserError || err);
+					if (browser.sauceData) {
+						sauce.updateJob(
+							job,
+							{
+								'custom-data': browser.sauceData
+							},
+							function(warn) {
+								if (warn) {
+									grunt.log.warn('Error updating SauceLabs data for job ' + job + ': ' + warn.errors);
+								}
+								else {
+									grunt.log.verbose.writeln('Updated SauceLabs data for job: ' + job);
+								}
+								
+								next(browserError || err);
+							}
+						);
+					}
 				}
 			);
 		};
