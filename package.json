@@ -45,10 +45,9 @@
 		"grunt",
 		"saucelabs",
 		"webdriver",
-		"test",
+		"wd",
 		"jasmine",
-		"siesta"
-	],
-	
-	"private": true
+		"siesta",
+		"testing"
+	]
 }
