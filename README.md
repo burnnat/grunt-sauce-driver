@@ -1,6 +1,8 @@
 grunt-sauce-driver
 ==================
 
+[![Dependency Status](https://gemnasium.com/burnnat/grunt-sauce-driver.png)](https://gemnasium.com/burnnat/grunt-sauce-driver)
+
 A [Grunt](http://gruntjs.com/) task for running [WebDriver scripts](https://github.com/admc/wd) in the [Sauce Labs](https://saucelabs.com/) cloud.
 
 In addition to supporting custom scripts, standard scripts are provided for running javascript unit tests in [Jasmine](http://pivotal.github.io/jasmine/) and [Siesta Lite](http://www.bryntum.com/products/siesta/).
