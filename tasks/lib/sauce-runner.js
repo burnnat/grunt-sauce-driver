@@ -154,7 +154,7 @@ module.exports = {
 														browser.next('pauseChain', 500);
 													}
 												}
-												catch(e) {
+												catch (e) {
 													browser.next('haltChain');
 													browser._chainOnErrorCallback(e);
 												}
@@ -280,15 +280,30 @@ module.exports = {
 			var driverPort = options.driverPort;
 			
 			var driver = spawn(
-				'C:/Selenium/chromedriver.exe',
+				'chromedriver',
 				['--port=' + driverPort]
 			);
+			
+			driver.on('error', function(error) {
+				if (error.code === 'ENOENT') {
+					driver = null;
+					grunt.log.error('Unable to locate local WebDriver.');
+					done(false);
+				}
+				else {
+					throw error;
+				}
+			});
 			
 			driver.stderr.on('data', function(data) {
 				grunt.log.verbose.writeln(data);
 			});
 			
 			driver.on('close', function(code) {
+				if (!driver) {
+					return;
+				}
+				
 				if (code) {
 					grunt.log.error('Local WebDriver terminated with error: ' + code);
 				}

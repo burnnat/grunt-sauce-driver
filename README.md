@@ -5,7 +5,12 @@ A [Grunt](http://gruntjs.com/) task for running [WebDriver scripts](https://gith
 
 In addition to supporting custom scripts, standard scripts are provided for running javascript unit tests in [Jasmine](http://pivotal.github.io/jasmine/) and [Siesta Lite](http://www.bryntum.com/products/siesta/).
 
-Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) plugin, this project aims to provide greater flexibility and support for custom WebDriver scripts.
+Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) plugin, this project aims to provide greater flexibility and support for custom WebDriver scripts, as well as the option to run tests locally.
+
+Local Tests
+-----------
+
+Local tests are currently only supported for Google Chrome. To run tests locally, ensure you have download the [ChromeDriver server](https://sites.google.com/a/chromium.org/chromedriver/home) and made it available on your `PATH` environment variable.
 
 Usage
 -----
@@ -57,7 +62,7 @@ grunt.initConfig({
 
 ### Options ###
 
-#### Basic ####
+#### Basic Options ####
 
 * __url__ : String _Required_
 
@@ -66,8 +71,8 @@ grunt.initConfig({
 * __script__ : Function _Required_
 
   The WebDriver script to run, either a custom function or one provided by `grunt-sauce-driver`.
-
   The function should accept the following parameters:
+
   * __browser__: The WebDriver [browser](https://github.com/admc/wd#browser-initialization) object.
   * __chain__: The WebDriver [chain](https://github.com/admc/wd#chain-api) object.
   * __options__: The Grunt options object.
@@ -100,7 +105,7 @@ grunt.initConfig({
 
   Number of milliseconds to wait for the test page to load. Defaults to `10000`.
 
-#### SauceLabs ####
+#### SauceLabs Options ####
 
 * __username__ : String _Optional_
 
@@ -130,7 +135,7 @@ grunt.initConfig({
 
   The build identifier to be associated with this test. Defaults to `null`.
 
-### Local ###
+#### Local Options ####
 
 * __local__ : Boolean _Optional_
 
