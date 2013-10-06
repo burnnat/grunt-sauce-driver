@@ -3,7 +3,7 @@
  */
 module.exports = function(browser, chain, options) {
 	chain
-		.waitForElementByClassName('alert', options.testReadyTimeout)
+		.waitForElementByClassName('jasmine_reporter', options.testReadyTimeout)
 		.waitForCondition('!!jasmine.runnerResults', options.testTimeout, options.testInterval)
 		.safeEval("jasmine.getJSReport ? jasmine.getJSReport() : null", function(err, obj) {
 			if (obj) {
