@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- "0.10"
+before_script:
+- git submodule update --init --recursive
+script:
+- npm test
+env:
+  global:
+  - secure: |-
+      IivAogkuEGKA1aM2MNs9A8YdRzUqiojdBIdU3Aj4seH043RL4qFtpyhhUdfd
+      YwNJKm33na2wLCh4za87gPgydffCCSdtOUn8g+pHNB1Xt+3PfALS7JVkui9+
+      atmCJtQ2nliSQMZ8HZhzFC1hCbA9rcAimHiwz9Q7hw2bnEXzNgE=
+  - secure: |-
+      HvKv9rLqoTXQoA6zVFv+vOP6FxWhEsOUTp9+8rFVlEQpqXaKdfOEB+MIx7tt
+      k6vddhmvXTSIC7ZUM6gKRDiwO79SUtpkTuwrCqU8GOkgl7X+ztJACJ6oJOvv
+      Dx57VUq94Z9NZdqgkUaPNzGP2mwqD84qZ+bhVNdkUvJAIxZqt0c=
