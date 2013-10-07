@@ -18,14 +18,14 @@ module.exports = function(grunt) {
 						browserName: 'chrome',
 						platform: 'Windows 7'
 					}
-				]
+				],
+				local: grunt.option('local')
 			},
 			
 			jasmine: {
 				options: {
 					url: 'http://localhost:9999/jasmine/examples/spec-runner/spec-runner.html',
-					script: saucedriver.jasmine,
-					local: true
+					script: saucedriver.jasmine
 				}
 			}
 		}
