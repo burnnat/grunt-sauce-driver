@@ -32,6 +32,7 @@
 	"main": "drivers.js",
 	
 	"dependencies": {
+		"lodash": "~2.2.1",
 		"saucelabs": "~0.1.0",
 		"sauce-tunnel": "~1.0.1",
 		"wd": "~0.1.5"

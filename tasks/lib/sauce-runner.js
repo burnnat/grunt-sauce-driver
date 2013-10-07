@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var webdriver = require('wd');
 var SauceLabs = require('saucelabs');
 var SauceTunnel = require('sauce-tunnel');
@@ -268,6 +269,40 @@ module.exports = {
 			}
 		}
 		else {
+			var os = {
+				win32: /^(windows|vista|xp)/i,
+				linux: /^linux/i,
+				darwin: /^(mac|os x)/i
+			};
+			
+			var platformTest = os[process.platform];
+			var matches = [];
+			
+			options.browsers.forEach(function(browser) {
+				var name = browser.browserName;
+				var platform = browser.platform;
+				
+				if (
+					name === 'chrome'
+					&& platformTest.test(platform)
+				) {
+					grunt.log.ok('Adding browser: ' + name);
+					matches.push({
+						browserName: name
+					});
+				}
+				else {
+					grunt.log.verbose.writeln("Skipping unsupported browser: " + name + " on " + platform)
+				}
+			});
+			
+			options.browsers = matches = _.unique(matches, 'browserName');
+			
+			if (matches.length < 1) {
+				grunt.log.error("No supported local browsers found");
+				return done(false);
+			}
+			
 			grunt.log.writeln("=> Starting local WebDriver ...");
 			
 			var scriptErr;
