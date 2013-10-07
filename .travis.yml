@@ -2,7 +2,10 @@ language: node_js
 node_js:
 - "0.10"
 before_script:
-- git submodule update --init --recursive
+- git submodule update --init
+- cd test/jasmine/
+- git submodule update --init
+- cd ../../
 script:
 - npm test
 env:
