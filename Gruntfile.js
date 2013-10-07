@@ -13,10 +13,10 @@ module.exports = function(grunt) {
 		saucedriver: {
 			options: {
 				browsers: [
-					{
-						browserName: 'safari',
-						platform: 'OS X 10.8'
-					},
+//					{
+//						browserName: 'safari',
+//						platform: 'OS X 10.8'
+//					},
 					{
 						browserName: 'opera',
 						platform: 'Linux'
