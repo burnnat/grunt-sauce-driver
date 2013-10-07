@@ -109,6 +109,14 @@ grunt.initConfig({
 
   Number of milliseconds to wait for the test page to load. Defaults to `10000`.
 
+* __mirrorTestFailure__ : Boolean _Optional_
+
+  When enabled, the grunt task will fail whenever any of the javascript tests fail. Otherwise, the task will fail only on WebDriver error (page load failure, test timeout, etc). Defaults to `true`.
+
+* __ignoreFailure__ : Boolean _Optional_
+
+  If enabled, specifies that the grunt task should always pass regardless of WebDriver errors or javascript test failures. (The task may still fail under certain catastrophic errors, however.) Defaults to `false`.
+
 #### SauceLabs Options ####
 
 * __username__ : String _Optional_

@@ -116,6 +116,17 @@ module.exports = {
 				}
 				
 				var scriptCallback = function(err) {
+					if (browser.saucePassed === false) {
+						var message = 'Javascript tests failed.';
+						
+						if (options.mirrorTestFailure) {
+							err = message;
+						}
+						else {
+							grunt.log.error(message);
+						}
+					}
+					
 					if (err) {
 						logError('Script ended with error', err);
 					}
@@ -257,7 +268,7 @@ module.exports = {
 								grunt,
 								options,
 								function(err) {
-									done(!err);
+									done(options.ignoreFailure || !err);
 								}
 							);
 						}
@@ -340,7 +351,7 @@ module.exports = {
 					grunt.log.writeln('Local WebDriver terminated.');
 				}
 				
-				done(!scriptErr);
+				done(options.ignoreFailure || !scriptErr);
 			});
 			
 			this.drive(

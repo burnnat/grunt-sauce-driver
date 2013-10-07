@@ -21,6 +21,9 @@ module.exports = function(grunt) {
 				testInterval: 2000,
 				testReadyTimeout: 10000,
 				
+				mirrorTestFailure: true,
+				ignoreFailure: false,
+				
 				// SauceLabs options
 				username: process.env.SAUCE_USERNAME,
 				key: process.env.SAUCE_ACCESS_KEY,
