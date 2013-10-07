@@ -1,7 +1,8 @@
 grunt-sauce-driver
 ==================
 
-[![Dependency Status](https://gemnasium.com/burnnat/grunt-sauce-driver.png)](https://gemnasium.com/burnnat/grunt-sauce-driver)
+[![Build Status](https://travis-ci.org/burnnat/grunt-sauce-driver.png)](https://travis-ci.org/burnnat/grunt-sauce-driver) [![Dependency Status](https://gemnasium.com/burnnat/grunt-sauce-driver.png)](https://gemnasium.com/burnnat/grunt-sauce-driver)
+[![Test Status](https://saucelabs.com/browser-matrix/grunt-sauce-driver.svg)](https://saucelabs.com/u/grunt-sauce-driver)
 
 A [Grunt](http://gruntjs.com/) task for running [WebDriver scripts](https://github.com/admc/wd) in the [Sauce Labs](https://saucelabs.com/) cloud.
 
