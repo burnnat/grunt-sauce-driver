@@ -5,7 +5,8 @@
 	"homepage": "https://github.com/burnnat/grunt-sauce-driver",
 	
 	"author": {
-		"name": "Nat Burns"
+		"name": "Nat Burns",
+		"email": "nbaccount@burnskids.com"
 	},
 	
 	"licenses": [
