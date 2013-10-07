@@ -366,6 +366,9 @@ module.exports = {
 							}
 						);
 					}
+					else {
+						next(browserError || err);
+					}
 				}
 			);
 		};
