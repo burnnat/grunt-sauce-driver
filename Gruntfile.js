@@ -5,7 +5,6 @@ module.exports = function(grunt) {
 		connect: {
 			server: {
 				options: {
-					base: 'test',
 					port: 9999
 				}
 			}
@@ -55,9 +54,17 @@ module.exports = function(grunt) {
 			
 			jasmine: {
 				options: {
-					url: 'http://localhost:9999/jasmine/examples/spec-runner/spec-runner.html',
+					url: 'http://localhost:9999/test/jasmine/examples/spec-runner/spec-runner.html',
 					script: saucedriver.jasmine,
 					testname: 'jasmine tests'
+				}
+			},
+			
+			siesta: {
+				options: {
+					url: 'http://localhost:9999/test/siesta/ext-general/index.html',
+					script: saucedriver.siesta,
+					testname: 'siesta tests'
 				}
 			}
 		}
