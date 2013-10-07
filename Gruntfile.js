@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 			
 			siesta: {
 				options: {
-					url: 'http://localhost:9999/test/siesta/ext-general/index.html',
+					url: 'http://localhost:9999/test/siesta/basics/index.html',
 					script: saucedriver.siesta,
 					testname: 'siesta tests'
 				}
