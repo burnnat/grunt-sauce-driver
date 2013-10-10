@@ -297,7 +297,7 @@ module.exports = {
 					name === 'chrome'
 					&& platformTest.test(platform)
 				) {
-					grunt.log.ok('Adding browser: ' + name);
+					grunt.log.verbose.writeln('Adding browser: ' + name);
 					matches.push({
 						browserName: name
 					});
