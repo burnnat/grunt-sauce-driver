@@ -47,7 +47,7 @@ grunt.initConfig({
 		},
 		
 		custom: {
-			url: 'http://example.com/test/siesta.html',
+			url: 'http://example.com/test/custom.html',
 			script: function(browser, chain) {
 				chain
 					.waitForElementByClassName('some-class')
