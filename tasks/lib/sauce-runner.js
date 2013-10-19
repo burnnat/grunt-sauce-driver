@@ -167,7 +167,9 @@ module.exports = {
 					browserCallback(err);
 				};
 				
-				if (options.slow) {
+				var delay = options.slow;
+				
+				if (delay) {
 					var ignore = /^chain$|^toString$|^_/;
 					
 					_.each(
@@ -180,7 +182,7 @@ module.exports = {
 							var original = browser[name];
 							
 							browser[name] = function() {
-								return original.apply(this, arguments).delay(500);
+								return original.apply(this, arguments).delay(delay);
 							};
 						}
 					);

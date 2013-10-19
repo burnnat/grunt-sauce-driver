@@ -89,9 +89,9 @@ grunt.initConfig({
 
   Number of concurrent browsers to test against. When running on Sauce Labs, check your account info for your maximum allowed concurrency. Defaults to `1`.
 
-* __slow__ : Boolean _Optional_
+* __slow__ : Boolean/Number _Optional_
 
-  If enabled, adds a small delay (0.5 seconds) between each WebDriver action, to make tests easier to watch and debug. Defaults to `false`.
+  Adds a delay between each WebDriver action, to make tests easier to watch and debug. Can be specified either as a boolean flag, or a number of milliseconds to delay. If set to `true`, a default value of 500 milliseconds will be used. Defaults to `false`.
 
 * __logging__ : Boolean _Optional_
 

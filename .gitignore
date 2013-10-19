@@ -1,4 +1,5 @@
 /.project
 /node_modules
 /.c9revisions
-
+*.log
+*.log.*

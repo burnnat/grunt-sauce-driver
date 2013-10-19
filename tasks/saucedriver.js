@@ -56,6 +56,10 @@ module.exports = function(grunt) {
 				return false;
 			}
 			
+			if (options.slow === true) {
+				options.slow = 500;
+			}
+			
 			runner.run(grunt, options, this.async());
 		}
 	);
