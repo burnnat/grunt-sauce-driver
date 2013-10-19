@@ -6,7 +6,8 @@ Siesta.Harness.meta.extend({
 			return {
 				durationSec: (this.endDate - this.startDate) / 1000,
 				passed: this.allPassed(),
-				suites: this.descriptors.map(
+				suites: Ext.Array.map(
+					this.descriptors,
 					function(descriptor) {
 						var suite = this.getSuiteResults(
 							this.testsByURL[descriptor.url].getResults().toJSON()
@@ -53,7 +54,8 @@ Siesta.Harness.meta.extend({
 			var fail = 0;
 			var total = 0;
 			
-			results.assertions.forEach(
+			Ext.Array.forEach(
+				results.assertions,
 				function(child) {
 					if (child.type === "Siesta.Result.SubTest") {
 						(child.bddSpecType === 'describe'
