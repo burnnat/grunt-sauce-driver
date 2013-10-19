@@ -193,7 +193,7 @@ module.exports = {
 					})
 					.get(options.url)
 					.then(function() {
-						return options.script(browser, browser, options);
+						return options.script(browser, options);
 					})
 					.fin(function() {
 						if (options.autoclose) {
