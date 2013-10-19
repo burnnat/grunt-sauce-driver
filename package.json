@@ -33,9 +33,9 @@
 	
 	"dependencies": {
 		"lodash": "~2.2.1",
-		"saucelabs": "~0.1.0",
+		"saucelabs": "~0.1.1",
 		"sauce-tunnel": "~1.0.1",
-		"wd": "~0.1.5"
+		"wd": "~0.2.0"
 	},
 	
 	"peerDependencies": {

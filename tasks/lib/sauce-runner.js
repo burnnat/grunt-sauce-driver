@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var EventEmitter = require('events').EventEmitter;
 var webdriver = require('wd');
 var SauceLabs = require('saucelabs');
 var SauceTunnel = require('sauce-tunnel');
@@ -93,7 +94,7 @@ module.exports = {
 		
 		var queue = grunt.util.async.queue(
 			function(browserConfig, rootCallback) {
-				var browser = webdriver.remote(driverConfig);
+				var browser = webdriver.promiseChainRemote(driverConfig);
 				
 				var browserCallback = browserConfig.callback
 					? function(err) {
@@ -112,6 +113,35 @@ module.exports = {
 					
 					browser.on('command', function(method, path){
 						grunt.log.writeln(' > \x1b[33m%s\x1b[0m: %s', method, path);
+					});
+					
+					browser.on('promise', function(context, method, args, status) {
+						var context = context === browser
+							? '[]'
+							: '[element ' + context.value + ']';
+						
+						args = _.clone(args);
+						
+						if (_.isFunction(_.last(args))) {
+							args.pop();
+						}
+						
+						args = args.map(function(arg) {
+							if (arg instanceof browser._Element) {
+								return '[element ' + arg.toString() + ']';
+							}
+							else {
+								return JSON.stringify(arg);
+							}
+						});
+						
+						grunt.log.verbose.writeln(
+							' --> %s %s %s ( %s )',
+							status,
+							context,
+							method,
+							args.join(', ')
+						);
 					});
 				}
 				
@@ -137,77 +167,47 @@ module.exports = {
 					browserCallback(err);
 				};
 				
-				var chain = browser.chain({
-					onError: options.autoclose
-						? function(err) {
-							browser.quit(function() {
-								scriptCallback(err);
-							});
-						}
-						: scriptCallback
-				});
-				
-				_.each(
-					_.functions(chain),
-					function(name) {
-						var original = chain[name];
-						
-						chain[name] = function() {
-							var args = 
-								_.reduce(
-									arguments,
-									function(args, arg) {
-										if (_.isFunction(arg)) {
-											args.push(function() {
-												try {
-													arg.apply(this, arguments);
-													
-													if (options.slow) {
-														browser.next('pauseChain', 500);
-													}
-												}
-												catch (e) {
-													browser.next('haltChain');
-													browser._chainOnErrorCallback(e);
-												}
-											});
-										}
-										else {
-											args.push(arg);
-										}
-										
-										return args;
-									},
-									[]
-								);
-							
-							return original.apply(this, args);
-						};
-					}
-				);
-				
-				chain.init(
-					browserConfig,
-					function(err) {
-						if (err) {
-							logError('Unable to initialize browser', err);
-							browserCallback(err);
-						}
-						else {
-							chain.get(options.url);
-							
-							var scriptErr = options.script(browser, chain, options);
-							
-							if (scriptErr) {
-								logError('Unable to initialize test script', scriptErr);
-								browserCallback(scriptErr);
+				if (options.slow) {
+					var ignore = /^chain$|^toString$|^_/;
+					
+					_.each(
+						_.functions(browser),
+						function(name) {
+							if (ignore.test(name) || EventEmitter.prototype[name]) {
+								return;
 							}
-							else {
-								chain[options.autoclose ? 'quit' : 'status'](scriptCallback);
-							}
+							
+							var original = browser[name];
+							
+							browser[name] = function() {
+								return original.apply(this, arguments).delay(500);
+							};
 						}
-					}
-				);
+					);
+				}
+				
+				browser.init(browserConfig)
+					.fail(function(err) {
+						logError('Unable to initialize browser', err);
+						browserCallback(err);
+					})
+					.get(options.url)
+					.then(function() {
+						return options.script(browser, browser, options);
+					})
+					.fin(function() {
+						if (options.autoclose) {
+							return browser.quit();
+						}
+					})
+					.done(
+						function() {
+							scriptCallback();
+						},
+						function(err) {
+							scriptCallback(err);
+						}
+					);
 			},
 			options.concurrency
 		);
