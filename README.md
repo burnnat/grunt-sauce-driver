@@ -14,7 +14,7 @@ Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) 
 Local Tests
 -----------
 
-Local tests are currently only supported for Google Chrome. To run tests locally, ensure you have downloaded the [ChromeDriver server](https://sites.google.com/a/chromium.org/chromedriver/home) and made it available on your `PATH` environment variable.
+Local tests are currently supported for Google Chrome and Internet Explorer. To run tests locally, ensure you have downloaded the [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) or [InternetExplorerDriver](http://code.google.com/p/selenium/wiki/InternetExplorerDriver) server and made it available on your `PATH` environment variable.
 
 Usage
 -----
@@ -48,16 +48,17 @@ grunt.initConfig({
 		
 		custom: {
 			url: 'http://example.com/test/custom.html',
-			script: function(browser, chain) {
-				chain
+			script: function(browser, options) {
+				return (
+					browser
 					.waitForElementByClassName('some-class')
-					.elementByXPath(
-						'//input[type=button]',
-						function(err, el) {
-							browser.next('clickElement', el);
-						}
-					)
-					.log('Test complete');
+					.elementByXPath('//input[type=button]')
+					.then(function(el) {
+						return browser.moveTo(el);
+					})
+					.click()
+					.log('Test complete')
+				);
 			}
 		}
 	}
@@ -157,9 +158,9 @@ grunt.initConfig({
 
   When running local tests, determines whether the browser under test will be automatically closed after the test completes. Defaults to `true`.
 
-* __driverPort__ : Number _Optional_
+* __driverPorts__ : Object _Optional_
 
-  The port number to use for communicating with the local WebDriver server. Defaults to `9515`.
+  A map of browser names to port numbers, for use when communicating with the local WebDriver server. Defaults to `{ "chrome": 9515, "internet explorer": 5555 }`.
 
 License
 -------

@@ -1,9 +1,12 @@
 var _ = require('lodash');
+var async = require('async');
+
 var EventEmitter = require('events').EventEmitter;
 var webdriver = require('wd');
 var SauceLabs = require('saucelabs');
 var SauceTunnel = require('sauce-tunnel');
-var spawn = require('child_process').spawn;
+
+var locals = require('./local-browsers');
 
 module.exports = {
 	
@@ -92,7 +95,7 @@ module.exports = {
 			grunt.log.error(message);
 		};
 		
-		var queue = grunt.util.async.queue(
+		var queue = async.queue(
 			function(browserConfig, rootCallback) {
 				var browser = webdriver.promiseChainRemote(driverConfig);
 				
@@ -282,24 +285,15 @@ module.exports = {
 			}
 		}
 		else {
-			var os = {
-				win32: /^(windows|vista|xp)/i,
-				linux: /^linux/i,
-				darwin: /^(mac|os x)/i
-			};
-			
-			var platformTest = os[process.platform];
 			var matches = [];
 			
 			options.browsers.forEach(function(browser) {
 				var name = browser.browserName;
 				var platform = browser.platform;
 				
-				if (
-					name === 'chrome'
-					&& platformTest.test(platform)
-				) {
+				if (locals.hasBrowser(browser)) {
 					grunt.log.verbose.writeln('Adding browser: ' + name);
+					
 					matches.push({
 						browserName: name
 					});
@@ -309,64 +303,78 @@ module.exports = {
 				}
 			});
 			
-			options.browsers = matches = _.unique(matches, 'browserName');
+			matches = _.unique(matches, 'browserName');
 			
 			if (matches.length < 1) {
 				grunt.log.error("No supported local browsers found");
 				return done(false);
 			}
 			
-			grunt.log.writeln("=> Starting local WebDriver ...");
+			var me = this;
+			var failed = false;
 			
-			var scriptErr;
-			var driverPort = options.driverPort;
-			
-			var driver = spawn(
-				'chromedriver',
-				['--port=' + driverPort]
-			);
-			
-			driver.on('error', function(error) {
-				if (error.code === 'ENOENT') {
-					driver = null;
-					grunt.log.error('Unable to locate local WebDriver.');
-					done(false);
-				}
-				else {
-					throw error;
-				}
-			});
-			
-			driver.stderr.on('data', function(data) {
-				grunt.log.verbose.writeln(data);
-			});
-			
-			driver.on('close', function(code) {
-				if (!driver) {
-					return;
-				}
-				
-				if (code) {
-					grunt.log.error('Local WebDriver terminated with error: ' + code);
-				}
-				else {
-					grunt.log.writeln('Local WebDriver terminated.');
-				}
-				
-				done(options.ignoreFailure || !scriptErr);
-			});
-			
-			this.drive(
-				grunt,
-				{
-					host: '127.0.0.1',
-					port: driverPort,
-					path: '/'
+			async.each(
+				matches,
+				function(browser, callback) {
+					var localOptions = _.defaults({ browsers: [browser] }, options);
+					
+					var name = browser.browserName;
+					var port = localOptions.driverPorts[name];
+					
+					grunt.log.writeln("=> Starting local WebDriver for browser '%s' on port %d ...", name, port);
+					
+					var scriptErr;
+					
+					var driver = locals.startDriver(browser, port);
+					
+					driver.on('error', function(error) {
+						if (error.code === 'ENOENT') {
+							driver = null;
+							grunt.log.error('Unable to locate local WebDriver.');
+							failed = true;
+							callback();
+						}
+						else {
+							throw error;
+						}
+					});
+					
+					driver.stderr.on('data', function(data) {
+						grunt.log.verbose.writeln(data);
+					});
+					
+					driver.on('close', function(code) {
+						if (!driver) {
+							return;
+						}
+						
+						if (code) {
+							grunt.log.error('Local WebDriver terminated with error: ' + code);
+						}
+						else {
+							grunt.log.writeln('Local WebDriver terminated.');
+						}
+						
+						failed = failed || (!localOptions.ignoreFailure && scriptErr);
+						callback();
+					});
+					
+					me.drive(
+						grunt,
+						{
+							host: '127.0.0.1',
+							port: port,
+							path: '/'
+						},
+						localOptions,
+						function(err) {
+							scriptErr = err;
+							locals.stopDriver(driver);
+						}
+					);
 				},
-				options,
-				function(err) {
-					scriptErr = err;
-					driver.kill();
+				function() {
+					done(!failed);
 				}
 			);
 		}
@@ -433,4 +441,4 @@ module.exports = {
 			done
 		);
 	}
-}
+};

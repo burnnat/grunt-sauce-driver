@@ -38,7 +38,10 @@ module.exports = function(grunt) {
 				// Local options
 				local: false,
 				autoclose: true,
-				driverPort: 9515
+				driverPorts: {
+					'chrome': 9515,
+					'internet explorer': 5555
+				}
 			});
 			
 			if (!options.url) {
