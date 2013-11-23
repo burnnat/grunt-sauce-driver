@@ -33,10 +33,10 @@
 	
 	"dependencies": {
 		"async": "~0.2.9",
-		"lodash": "~2.2.1",
+		"lodash": "~2.3.0",
 		"saucelabs": "~0.1.1",
-		"sauce-tunnel": "~1.0.1",
-		"wd": "~0.2.0"
+		"sauce-tunnel": "~1.1.0",
+		"wd": "~0.2.3"
 	},
 	
 	"peerDependencies": {
@@ -44,7 +44,7 @@
 	},
 	
 	"devDependencies": {
-		"grunt-cli": "~0.1.9",
+		"grunt-cli": "~0.1.11",
 		"grunt-contrib-connect": "~0.5.0",
 		"grunt-debug": "~0.0.1"
 	},
