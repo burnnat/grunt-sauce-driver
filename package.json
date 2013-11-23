@@ -1,6 +1,6 @@
 {
 	"name": "grunt-sauce-driver",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Grunt task for running Selenium WebDriver tests on SauceLabs.",
 	"homepage": "https://github.com/burnnat/grunt-sauce-driver",
 	

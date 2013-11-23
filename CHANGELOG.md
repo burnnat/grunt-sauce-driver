@@ -1,3 +1,7 @@
+# 0.1.1 / 2013-11-23
+
+ * [BUGFIX] Fix error logging non-element action arguments.
+
 # 0.1.0 / 2013-10-19
 
  * [FEATURE] Add support for Internet Explorer when running locally.

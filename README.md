@@ -14,7 +14,7 @@ Inspired by the [grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs) 
 Local Tests
 -----------
 
-Local tests are currently supported for Google Chrome and Internet Explorer. To run tests locally, ensure you have downloaded the [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) or [InternetExplorerDriver](http://code.google.com/p/selenium/wiki/InternetExplorerDriver) server and made it available on your `PATH` environment variable.
+Local tests are currently supported for Google Chrome and Internet Explorer. To run tests locally, ensure you have downloaded the appropriate [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) or [InternetExplorerDriver](http://code.google.com/p/selenium/wiki/InternetExplorerDriver) server for your platform and made it available on your `PATH` environment variable.
 
 Usage
 -----
@@ -78,8 +78,7 @@ grunt.initConfig({
   The WebDriver script to run, either a custom function or one provided by `grunt-sauce-driver`.
   The function should accept the following parameters:
 
-  * __browser__: The WebDriver [browser](https://github.com/admc/wd#browser-initialization) object.
-  * __chain__: The WebDriver [chain](https://github.com/admc/wd#chain-api) object.
+  * __browser__: The WebDriver [browser](https://github.com/admc/wd#browser-initialization) object (using the [promises](https://github.com/admc/wd#q-promises--chaining) API).
   * __options__: The Grunt options object.
 
 * __browsers__ : Object[] _Required_
