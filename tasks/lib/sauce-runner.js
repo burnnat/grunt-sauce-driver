@@ -130,7 +130,7 @@ module.exports = {
 						}
 						
 						args = args.map(function(arg) {
-							if (arg instanceof browser._Element) {
+							if (_.isFunction(arg) && arg instanceof browser._Element) {
 								return '[element ' + arg.toString() + ']';
 							}
 							else {
