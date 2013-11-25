@@ -1,7 +1,7 @@
 grunt-sauce-driver
 ==================
 
-[![Build Status](https://travis-ci.org/burnnat/grunt-sauce-driver.png)](https://travis-ci.org/burnnat/grunt-sauce-driver) [![Dependency Status](https://gemnasium.com/burnnat/grunt-sauce-driver.png)](https://gemnasium.com/burnnat/grunt-sauce-driver)
+[![Build Status](https://travis-ci.org/burnnat/grunt-sauce-driver.png)](https://travis-ci.org/burnnat/grunt-sauce-driver) [![Dependency Status](https://gemnasium.com/burnnat/grunt-sauce-driver.png)](https://gemnasium.com/burnnat/grunt-sauce-driver) [![NPM version](https://badge.fury.io/js/grunt-sauce-driver.png)](http://badge.fury.io/js/grunt-sauce-driver)
 
 [![Test Status](https://saucelabs.com/browser-matrix/grunt-sauce-driver.svg)](https://saucelabs.com/u/grunt-sauce-driver)
 
