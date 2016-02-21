@@ -3,34 +3,27 @@
 	"version": "0.1.1",
 	"description": "Grunt task for running Selenium WebDriver tests on SauceLabs.",
 	"homepage": "https://github.com/burnnat/grunt-sauce-driver",
-	
 	"author": {
 		"name": "Nat Burns",
 		"email": "nbaccount@burnskids.com"
 	},
-	
 	"licenses": [
 		{
 			"type": "MIT",
 			"url": "https://github.com/burnnat/grunt-sauce-driver/blob/master/LICENSE"
 		}
 	],
-	
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/burnnat/grunt-sauce-driver.git"
 	},
-	
 	"bugs": {
 		"url": "https://github.com/burnnat/grunt-sauce-driver/issues"
 	},
-	
 	"engines": {
 		"node": ">=0.8.0"
 	},
-	
 	"main": "drivers.js",
-	
 	"dependencies": {
 		"async": "~0.2.9",
 		"lodash": "~2.3.0",
@@ -38,21 +31,17 @@
 		"sauce-tunnel": "~1.1.0",
 		"wd": "~0.2.3"
 	},
-	
 	"peerDependencies": {
-		"grunt": "~0.4.0"
+		"grunt": ">=0.4.0"
 	},
-	
 	"devDependencies": {
 		"grunt-cli": "~0.1.11",
 		"grunt-contrib-connect": "~0.5.0",
 		"grunt-debug": "~0.0.1"
 	},
-	
 	"scripts": {
 		"test": "node ./node_modules/grunt-cli/bin/grunt test"
 	},
-	
 	"keywords": [
 		"gruntplugin",
 		"grunt",
