@@ -33,7 +33,7 @@
 	
 	"dependencies": {
 		"async": "~0.2.9",
-		"lodash": "~2.3.0",
+		"lodash": "~4.17.19",
 		"saucelabs": "~0.1.1",
 		"sauce-tunnel": "~1.1.0",
 		"wd": "~0.2.3"
